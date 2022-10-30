@@ -18,6 +18,7 @@
                     if (isset($_SESSION["lError"])) {
                         echo displayError("lError");
                         echo displayError("lError","No tens un compte? <a>Registret ara!</a>");
+                        unset($_SESSION["lError"]);
                     }
                 ?>
             </div>
