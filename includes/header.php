@@ -1,20 +1,25 @@
 <?php
     session_start();
+
     if (isset($_SESSION["rerror"])) {
         $rerrors = explode("-",$_SESSION["rerror"]);
+        unset($_SESSION["rerror"]);
+    }
+    if (isset($_SESSION["remailexistent"])) {
+        $remailexistent = $_SESSION["remailexistent"];
+        unset($_SESSION["remailexistent"]);
     }
     if (isset($_SESSION["rdone"])) {
-        echo "registered";
+        unset($_SESSION["rdone"]);
     }
-    if (isset($_COOKIE["remember"])) {
-        $cookieUser = $_COOKIE["user"];
-        if (isset($_COOKIE["password"])) {
-            $time = time()+2592000;
-            $cookiePassword = $_COOKIE["password"];
-            setcookie("remember",TRUE,$time,"/","localhost");
-            setcookie("password",$cookiePassword,$time,"/","localhost");
-            setcookie("user",$cookieUser,$time,"/","localhost");
+    if (isset($_COOKIE["remember_me"])) {
+        include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
+        $sql = "SELECT * FROM user_tokens WHERE token = '" . $_COOKIE["remember_me"] . "'";
+        $select = $conn->query($sql);
+        if ($select && mysqli_num_rows($select) == 1) {
+            $_SESSION["id"] = $select->fetch_assoc()["user_id"];
         }
+        $conn->close();
     }
     include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/gets.php";
 ?>
@@ -39,7 +44,7 @@
             <div class="flex flex-row">
                 <?php 
 
-                    if (isset($_COOKIE["user"]) && isset($_COOKIE["password"])) {
+                    if (isset($_SESSION["id"])) {
                         echo '<a class="px-8 py-2 bg-slate-200 hover:bg-slate-400 border-gray-400 border-r border-l" href="/user">' . getFullName() . '</a>';
                         echo '<a class="px-8 py-2 bg-slate-200 hover:bg-slate-400 border-gray-400 border-r border-l" href="/validate/logout.php">Logout</a>';
                     } else {
