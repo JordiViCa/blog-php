@@ -1,4 +1,4 @@
-<div class="max-w-full fixed w-[100vw] h-screen top-0 left-0 flex backdrop-blur-md transition-all <?php if (isset($_SESSION["rerror"]) || isset($_SESSION["remailexistent"])) { echo 'opacity-100 z-10'; } else { echo 'opacity-0 -z-10'; } ?>" style="background-color: rgba(0, 0, 0, 0.3);transition-duration: 300ms;" id="registerComponent">
+<div class="max-w-full fixed w-[100vw] h-screen top-0 left-0 flex backdrop-blur-md transition-all <?php if (isset($rerrors) || isset($remailexistent)) { echo 'opacity-100 z-10'; } else { echo 'opacity-0 -z-10'; } ?>" style="background-color: rgba(0, 0, 0, 0.3);transition-duration: 300ms;" id="registerComponent">
     <div class="shadow-lg bg-slate-100 md:w-1/2 xl:w-1/3 mx-auto my-auto blur-none">
         <button class="absolute top-2 right-3" onclick="toggleRegister()"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 my-auto" viewBox="0 0 512 512"><title>Close</title><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M368 368L144 144M368 144L144 368"/></svg></button>
         <h1 class="text-6xl font-thin mb-10 border-b border-slate-400 pb-4 pt-4 px-20">Register</h1>
@@ -12,6 +12,9 @@
                     if (isset($rerrors) && in_array("name",$rerrors)) {
                         echo displayError("name");
                     }
+                    if (isset($_SESSION["rname"])) {
+                        unset($_SESSION["rname"]);
+                    }
                 ?>
             </div>
             <div class="flex flex-col mb-4">
@@ -22,6 +25,9 @@
                 <?php
                     if (isset($rerrors) && in_array("surname",$rerrors)) {
                         echo displayError("surname");
+                    }
+                    if (isset($_SESSION["rsurname"])) {
+                        unset($_SESSION["rsurname"]);
                     }
                 ?>
             </div>
@@ -34,8 +40,11 @@
                     if (isset($rerrors) && in_array("email",$rerrors)) {
                         echo displayError("email");
                     }
-                    if (isset($_SESSION["remailexistent"])) {
+                    if (isset($remailexistent)) {
                         echo displayError("remailexistent");
+                    }
+                    if (isset($_SESSION["remail"])) {
+                        unset($_SESSION["remail"]);
                     }
                 ?>
             </div>
@@ -56,7 +65,7 @@
                     <label class="w-2/6 text-right pr-4 text-lg" for="rremember">Recordem</label>
                 </div>
             </div>
-            <button class="bg-gray-500 w-4/6 ml-auto text-white hover:bg-white hover:text-gray-500 border-gray-500 border focus:outline-gray-500" type="submit">Register</button>
+            <button class="bg-gray-500 w-4/6 ml-auto text-white hover:bg-white hover:text-gray-500 border-gray-500 border focus:outline-gray-500" type="submit" name="redirect" value="<?php echo isset($backUrl) ? $backUrl:'/'?>">    Register</button>
         </form>
         <div class="flex py-3 flex-row justify-between">
             <p class="ml-auto my-auto">Ja tens un compte?</p>
