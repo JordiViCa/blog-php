@@ -5,6 +5,32 @@
 <main class="py-10">
     <div class="flex flex-wrap justify-around bg-slate-200 mx-auto w-4/5 px-20 py-14 rounded-md">
         <h1 class="text-4xl w-full">Entrades</h1>
+        <form action="" method="get" class="w-full">
+            <div class="flex flex-col w-2/12 mt-4 mb-2">
+                <select name="c" id="c" onchange="this.form.submit()">
+                    <?php
+                        $default = "";
+                        if (isset($_GET["c"])) {
+                            $default = $_GET["c"];
+                        }
+                        if ($default == "") {
+                            echo "<option selected value=''>Selecciona una categoria</option>";
+                        } else {
+                            echo "<option value=''>Selecciona una categoria</option>";
+                        }
+                        include("../includes/connect.php");
+                        $sql = "SELECT name FROM categories";
+                        $select = $conn->query($sql);
+                        $conn->close();
+                        $rows = mysqli_fetch_all ($select, MYSQLI_ASSOC);
+                        foreach ($rows as $key => $value) {
+                            echo "<option value='" . strtolower($value["name"]) . "'";
+                            if ($default == strtolower($value["name"])) { echo "selected >" . $value["name"] .  "</option>"; } else { echo ">" . $value["name"] .  "</option>"; }
+                        }
+                    ?>
+                </select>
+            </div>
+        </form>
         <article class="rounded-xl shadow-md mt-4 bg-slate-100 p-5 flex flex-row">
             <img src="\assets\img\post.png" alt="Image" class="mr-2 w-1/5 aspect-auto">
             <div class="flex flex-col">
