@@ -1,15 +1,19 @@
 <?php
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
     session_start();
-    if (count($_POST) < 4) {
+    if (count($_POST) < 5) {
         session_destroy();
         header("Location: /");
     }
     $register = true;
+    $redirect = $_POST["redirect"] ?? "/";
     $name = $_POST["rname"] ?? "";
     $surname = $_POST["rsurname"] ?? "";
     $email = $_POST["remail"] ?? "";
     $password = $_POST["rpass"] ?? "";
-    $rememberMe = $_POST["rremember"] ? TRUE:FALSE;
+    $rememberMe = $_POST["rremember"] ? true:false;
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $_SESSION["rerror"] = "email-";
         $register = false;
@@ -49,30 +53,33 @@
             include("../includes/connect.php");
             $sql = "INSERT INTO users (name,surname,email,password,date) VALUES ('" . $name . "','" . $surname . "','" . $email . "','". password_hash($password, PASSWORD_BCRYPT, ['cost'=>4]) ."',(SELECT now()))";
             if ($conn->query($sql) === TRUE) {
-                if ($rememberMe === TRUE) {
-                    setcookie("password",$password,time()+2592000,"/","localhost");
-                    setcookie("user",$email,time()+2592000,"/","localhost");
-                    setcookie("remember",$rememberMe,time()+2592000,"/","localhost");
-                } else {
-                    setcookie("password",$password,time()+14400,"/","localhost");
-                    setcookie("user",$email,time()+14400,"/","localhost");
+                $conn->close();
+                include("../includes/connect.php");
+                $sql = "SELECT * FROM users WHERE email = '" . $email . "'";
+                $id = $conn->query($sql)->fetch_assoc()["id"];
+                $conn->close();
+                $_SESSION["id"] = $id;
+                if ($rememberMe) {
+                    $token = bin2hex(random_bytes(16));
+                    $expired_seconds = time() + 60 * 60 * 24 * 30;
+                    include("../includes/connect.php");
+                    $sql = "INSERT INTO user_tokens (token,expiry,user_id) VALUES ('" . $token . "','" . $expired_seconds . "','" . $id . "')";
+                    if ($conn->query($sql) === TRUE) {
+                        $conn->close();
+                        setcookie("remember_me",$token,$expired_seconds,"/","localhost");
+                    }
                 }
-                header("Location: /");
-            } else {
-                echo "\nError" . $sql . "<br>" . $conn->error;
             }
-            $conn->close();
         } else {
             $_SESSION["remailexistent"] = $email;
             $_SESSION["remail"] = $email;
             $_SESSION["rname"] = $name;
             $_SESSION["rsurname"] = $surname;
-            header("Location: /");
         }
     } else {
         $_SESSION["remail"] = $email;
         $_SESSION["rname"] = $name;
         $_SESSION["rsurname"] = $surname;
-        header("Location: /");
     }
+    header("Location: " . $redirect);
 ?>
