@@ -19,7 +19,7 @@
     }
     function getFullName() {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
-        $sql = "SELECT name,surname FROM users WHERE email = '" . $_COOKIE["user"] . "'";
+        $sql = "SELECT name,surname FROM users WHERE id = '" . $_SESSION["id"] . "'";
         $select = $conn->query($sql);
         $row = $select->fetch_assoc();
         $nameSurname = $row["name"] . " " . $row["surname"];
@@ -29,7 +29,7 @@
 
     function getUser() {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
-        $sql = "SELECT name,surname,email FROM users WHERE email = '" . $_COOKIE["user"] . "'";
+        $sql = "SELECT name,surname,email FROM users WHERE id = '" . $_SESSION["id"] . "'";
         $select = $conn->query($sql);
         $row = $select->fetch_assoc();
         $conn->close();
