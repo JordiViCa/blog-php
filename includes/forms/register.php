@@ -1,15 +1,15 @@
-<div class="max-w-full fixed w-[100vw] h-screen top-0 left-0 flex backdrop-blur-md transition-all <?php if (isset($rerrors) || isset($remailexistent)) { echo 'opacity-100 z-10'; } else { echo 'opacity-0 -z-10'; } ?>" style="background-color: rgba(0, 0, 0, 0.3);transition-duration: 300ms;" id="registerComponent">
-    <div class="shadow-lg bg-slate-100 md:w-1/2 xl:w-1/3 mx-auto my-auto blur-none">
+<div class="max-w-full fixed w-[100vw] h-screen top-0 left-0 flex backdrop-blur-md transition-all <?php if (isset($errors) || isset($remailexistent)) { echo 'opacity-100 z-10'; } else { echo 'opacity-0 -z-10'; } ?>" style="background-color: rgba(0, 0, 0, 0.3);transition-duration: 300ms;" id="registerComponent">
+    <div class="shadow-lg bg-gray-100 md:w-1/2 xl:w-1/3 mx-auto my-auto blur-none">
         <button class="absolute top-2 right-3" onclick="toggleRegister()"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 my-auto" viewBox="0 0 512 512"><title>Close</title><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M368 368L144 144M368 144L144 368"/></svg></button>
-        <h1 class="text-6xl font-thin mb-10 border-b border-slate-400 pb-4 pt-4 px-20">Register</h1>
-        <form class="px-20 border-b border-slate-400 flex flex-col pb-10" action="/validate/register.php" method="post">
+        <h1 class="text-6xl font-thin mb-10 border-b border-gray-400 pb-4 pt-4 px-20">Register</h1>
+        <form class="px-20 border-b border-gray-400 flex flex-col pb-10" action="/validate/register.php" method="post">
             <div class="flex flex-col mb-4">
                 <div class="flex flex-row">
                     <label class="w-2/6 text-right pr-4 text-lg" for="rname">Nom</label>
-                    <input class="w-4/6 border-b border-slate-600 h-8 text-lg focus:outline-gray-500" type="text" name="rname" required id="rname" <?php if (isset($_SESSION["rname"])) { echo "value='" . $_SESSION['rname'] . "'";} ?>>
+                    <input class="w-4/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="text" name="rname" required id="rname" <?php if (isset($_SESSION["rname"])) { echo "value='" . $_SESSION['rname'] . "'";} ?>>
                 </div>
                 <?php
-                    if (isset($rerrors) && in_array("name",$rerrors)) {
+                    if (isset($errors) && in_array("name",$errors)) {
                         echo displayError("name");
                     }
                     if (isset($_SESSION["rname"])) {
@@ -20,10 +20,10 @@
             <div class="flex flex-col mb-4">
                 <div class="flex flex-row">
                     <label class="w-2/6 text-right pr-4 text-lg" for="rsurname">Cognom</label>
-                    <input class="w-4/6 border-b border-slate-600 h-8 text-lg focus:outline-gray-500" type="text" name="rsurname" required id="rsurname" <?php if (isset($_SESSION["rsurname"])) { echo "value='" . $_SESSION['rsurname'] . "'";} ?>>
+                    <input class="w-4/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="text" name="rsurname" required id="rsurname" <?php if (isset($_SESSION["rsurname"])) { echo "value='" . $_SESSION['rsurname'] . "'";} ?>>
                 </div>
                 <?php
-                    if (isset($rerrors) && in_array("surname",$rerrors)) {
+                    if (isset($errors) && in_array("surname",$errors)) {
                         echo displayError("surname");
                     }
                     if (isset($_SESSION["rsurname"])) {
@@ -34,14 +34,15 @@
             <div class="flex flex-col mb-4">
                 <div class="flex flex-row">
                     <label class="w-2/6 text-right pr-4 text-lg" for="remail">Email</label>
-                    <input class="w-4/6 border-b border-slate-600 h-8 text-lg focus:outline-gray-500" type="text" name="remail" required id="remail" <?php if (isset($_SESSION["remail"])) { echo "value='" . $_SESSION['remail'] . "'";} ?>>
+                    <input class="w-4/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="text" name="remail" required id="remail" <?php if (isset($_SESSION["remail"])) { echo "value='" . $_SESSION['remail'] . "'";} ?>>
                 </div>
                 <?php
-                    if (isset($rerrors) && in_array("email",$rerrors)) {
+                    if (isset($errors) && in_array("email",$errors)) {
                         echo displayError("email");
                     }
-                    if (isset($remailexistent)) {
+                    if (isset($_SESSION["remailexistent"])) {
                         echo displayError("remailexistent");
+                        unset($_SESSION["remailexistent"]);
                     }
                     if (isset($_SESSION["remail"])) {
                         unset($_SESSION["remail"]);
@@ -51,10 +52,10 @@
             <div class="flex flex-col mb-4">
                 <div class="flex flex-row">
                     <label class="w-2/6 text-right pr-4 text-lg" for="rpass">Contrasenya</label>
-                    <input class="w-4/6 border-b border-slate-600 h-8 text-lg focus:outline-gray-500" type="password" name="rpass" required id="rpass">
+                    <input class="w-4/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="password" name="rpass" required id="rpass">
                 </div>
                 <?php
-                    if (isset($rerrors) && in_array("password",$rerrors)) {
+                    if (isset($errors) && in_array("password",$errors)) {
                         echo displayError("password");
                     }
                 ?>

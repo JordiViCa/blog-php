@@ -1,18 +1,18 @@
 <div class="max-w-full fixed w-[100vw] h-screen top-0 left-0 flex backdrop-blur-md transition-all  <?php if (isset($_SESSION["lError"])) { echo 'opacity-100 z-10'; } else { echo 'opacity-0 -z-10'; } ?>" style="background-color: rgba(0, 0, 0, 0.3);transition-duration: 300ms;" id="loginComponent">
-    <div class="shadow-lg bg-slate-100 md:w-1/2 xl:w-1/3 mx-auto my-auto blur-none">
+    <div class="shadow-lg bg-gray-100 md:w-1/2 xl:w-1/3 mx-auto my-auto blur-none">
         <button class="absolute top-2 right-3" onclick="toggleLogin()"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 my-auto" viewBox="0 0 512 512"><title>Close</title><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M368 368L144 144M368 144L144 368"/></svg></button>
-        <h1 class="text-6xl font-thin mb-10 border-b border-slate-400 pb-4 pt-4 px-20">Login</h1>
-        <form class="px-20 border-b border-slate-400 flex flex-col pb-10" action="/validate/login.php" method="post">
+        <h1 class="text-6xl font-thin mb-10 border-b border-gray-400 pb-4 pt-4 px-20">Login</h1>
+        <form class="px-20 border-b border-gray-400 flex flex-col pb-10" action="/validate/login.php" method="post">
             <div class="flex flex-col mb-4">
                 <div class="flex flex-row">
                     <label class="w-2/6 text-right pr-4 text-lg" for="lemail">Email</label>
-                    <input class="w-4/6 border-b border-slate-600 h-8 text-lg focus:outline-gray-500" type="email" name="lemail" id="lemail" <?php if (isset($_SESSION["lError"])) { echo 'value="' . $_SESSION["lError"] . '"'; } ?>>
+                    <input class="w-4/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="email" name="lemail" id="lemail" <?php if (isset($_SESSION["lError"])) { echo 'value="' . $_SESSION["lError"] . '"'; } ?>>
                 </div>
             </div>
             <div class="flex flex-col mb-4">
                 <div class="flex flex-row">
                     <label class="w-2/6 text-right pr-4 text-lg" for="lpassword">Contrasenya</label>
-                    <input class="w-4/6 border-b border-slate-600 h-8 text-lg focus:outline-gray-500" type="password" name="lpassword" id="lpassword">
+                    <input class="w-4/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="password" name="lpassword" id="lpassword">
                 </div>
                 <?php
                     if (isset($_SESSION["lError"])) {
