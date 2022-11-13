@@ -1,23 +1,21 @@
 <?php
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
     session_start();
     if (count($_POST) < 5) {
         session_destroy();
         header("Location: /");
     }
     $register = true;
-    $redirect = $_POST["redirect"] ?? "/";
+    $redirect = htmlspecialchars($_POST["redirect"]) ?? "/";
     $name = $_POST["rname"] ?? "";
     $surname = $_POST["rsurname"] ?? "";
     $email = $_POST["remail"] ?? "";
     $password = $_POST["rpass"] ?? "";
     $rememberMe = $_POST["rremember"] ? true:false;
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $_SESSION["rerror"] = "email-";
+        $_SESSION["errors"] = "email-";
         $register = false;
     }
+    $email = htmlspecialchars($email);
     // Validate password strength
     $passUpper = preg_match('@[A-Z]@', $password);
     $passLower = preg_match('@[a-z]@', $password);
@@ -25,25 +23,29 @@
     $passSpecial = preg_match('@[^\w]@', $password);
 
     if (!$passUpper || !$passLower || !$passNumber || !$passSpecial || strlen($password) < 8) {
-        $_SESSION["rerror"] = $_SESSION["rerror"] . "password-";
+        $_SESSION["errors"] = $_SESSION["errors"] . "password-";
         $register = false;
     }
+    $password = htmlspecialchars($password);
     
     // Validate name
     $nameNumber = preg_match('@[0-9]@', $name);
     $nameSpecial = preg_match('@[^\w]@', $name);
     if ($nameNumber || $nameSpecial || $name == "") {
-        $_SESSION["rerror"] = $_SESSION["rerror"] . "name-";
+        $_SESSION["errors"] = $_SESSION["errors"] . "name-";
         $register = false;
     }
+    $name = htmlspecialchars($name);
     
     // Validate surname
     $surnameNumber = preg_match('@[0-9]@', $surname);
     $surnameSpecial = preg_match('@[^\w]@', $surname);
     if ($surnameNumber || $surnameSpecial || $surname == "") {
-        $_SESSION["rerror"] = $_SESSION["rerror"] . "surname";
+        $_SESSION["errors"] = $_SESSION["errors"] . "surname";
         $register = false;  
     }
+    $surname = htmlspecialchars($surname);
+
     if ($register) {
         include("../includes/connect.php");
         $sql = "SELECT email FROM users WHERE email = '" . $email . "'";
