@@ -1,3 +1,4 @@
+<!-- Popup login -->
 <div class="max-w-full fixed w-[100vw] h-screen top-0 left-0 flex backdrop-blur-md transition-all  <?php if (isset($_SESSION["lError"])) { echo 'opacity-100 z-10'; } else { echo 'opacity-0 -z-10'; } ?>" style="background-color: rgba(0, 0, 0, 0.3);transition-duration: 300ms;" id="loginComponent">
     <div class="shadow-lg bg-gray-100 md:w-1/2 xl:w-1/3 mx-auto my-auto blur-none">
         <button class="absolute top-2 right-3" onclick="toggleLogin()"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 my-auto" viewBox="0 0 512 512"><title>Close</title><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M368 368L144 144M368 144L144 368"/></svg></button>
@@ -36,6 +37,7 @@
         </div>
     </div>
     <script>
+        // Function to toggle login popup
         function toggleLogin() {
             let login = document.getElementById("loginComponent");
             document.body.style.overflow = "";
@@ -52,8 +54,8 @@
                 login.classList.add("-z-10");
             }
         }
+        // Add event listener to loginComponent
         document.getElementById("loginComponent").addEventListener("click", function(event) {
-            console.log(event)
             if (event.target.id == "loginComponent") {
                 toggleLogin();
             }

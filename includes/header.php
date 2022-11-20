@@ -1,17 +1,18 @@
 <?php
     session_start();
+    // Check session errors login
     if (isset($_SESSION["errors"])) {
         $errors = explode("-",$_SESSION["errors"]);
         unset($_SESSION["errors"]);
     }
-    if (isset($_SESSION["rdone"])) {
-        unset($_SESSION["rdone"]);
-    }
+    // Check remember me cookie
     if (isset($_COOKIE["remember_me"])) {
+        // Check if is valid
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $sql = "SELECT * FROM user_tokens WHERE token = '" . $_COOKIE["remember_me"] . "'";
         $select = $conn->query($sql);
         if ($select && mysqli_num_rows($select) == 1) {
+            // Add session id
             $_SESSION["id"] = $select->fetch_assoc()["user_id"];
         }
         $conn->close();
@@ -27,16 +28,16 @@
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 relative" style="z-index: 5;">
+<body class="bg-gray-100 relative flex flex-col min-h-screen" style="z-index: 5;">
     <header>
         <h1 class="text-2xl sm:text-5xl md:text-7xl font-extralight py-4 pl-4">L'ART GENERAT PER I.A.</h1>
-        <nav class="flex justify-between border-b border-t border-gray-400 text-lg">
-            <div class="flex flex-row">
-                <a class="px-8 py-2 bg-gray-200 hover:bg-gray-400 border-gray-400 border-r border-l transition-all" href="/">Inici</a>
-                <a class="px-8 py-2 bg-gray-200 hover:bg-gray-400 border-gray-400 border-r border-l transition-all" href="/galeria">Galeria</a>
-                <a class="px-8 py-2 bg-gray-200 hover:bg-gray-400 border-gray-400 border-r border-l transition-all" href="/noticies">Noticies</a>
+        <nav class="flex justify-between border-b border-t border-gray-400 text-lg flex-wrap">
+            <div class="flex flex-row w-full sm:w-auto">
+                <a class="w-1/3 sm:w-auto sm:px-8 py-2 text-center bg-gray-200 hover:bg-gray-400 border-gray-400 border-r border-l transition-all" href="/">Inici</a>
+                <a class="w-1/3 sm:w-auto sm:px-8 py-2 text-center bg-gray-200 hover:bg-gray-400 border-gray-400 border-r border-l transition-all" href="/galeria">Galeria</a>
+                <a class="w-1/3 sm:w-auto sm:px-8 py-2 text-center bg-gray-200 hover:bg-gray-400 border-gray-400 border-r border-l transition-all" href="/noticies">Noticies</a>
             </div>
-            <div class="flex flex-row relative">
+            <div class="flex flex-row relative w-full sm:w-auto">
                 
                 
                 
@@ -47,7 +48,7 @@
                 <?php 
 
                     if (isset($_SESSION["id"])) {
-                        echo '<button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="px-8 inline-flex items-center py-2 bg-gray-200 active:bg-gray-400  hover:bg-gray-400 border-gray-400 border-r border-l" type="button">' . getFullName() . '<svg class="ml-2 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>';
+                        echo '<button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="px-8  w-full sm:w-auto border-t sm:border-t-0 inline-flex items-center py-2 bg-gray-200 active:bg-gray-400  hover:bg-gray-400 border-gray-400 border-r border-l" type="button">' . getFullName() . '<svg class="ml-2 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>';
                         echo    '<div id="dropdownDivider" class="hidden z-10 w-44 bg-gray-200 rounded divide-y divide-gray-100 shadow" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: trangray(0px, 510px);">
                                     <ul class="py-1 text-sm text-gray-700" aria-labelledby="dropdownDividerButton">
                                         <li>

@@ -1,10 +1,12 @@
 <?php
     session_start();
+    // If less than X post, redirect and destroy session
     if (count($_POST) < 5) {
         session_destroy();
         header("Location: /");
     }
     $register = true;
+    // Get posts
     $redirect = htmlspecialchars($_POST["redirect"]) ?? "/";
     $name = $_POST["rname"] ?? "";
     $surname = $_POST["rsurname"] ?? "";
@@ -20,7 +22,7 @@
     $passUpper = preg_match('@[A-Z]@', $password);
     $passLower = preg_match('@[a-z]@', $password);
     $passNumber    = preg_match('@[0-9]@', $password);
-    $passSpecial = preg_match('@[^\w]@', $password);
+    $passSpecial = preg_match("/[^A-Za-z0-9 ]/", $password);
 
     if (!$passUpper || !$passLower || !$passNumber || !$passSpecial || strlen($password) < 8) {
         $_SESSION["errors"] = $_SESSION["errors"] . "password-";
@@ -30,7 +32,7 @@
     
     // Validate name
     $nameNumber = preg_match('@[0-9]@', $name);
-    $nameSpecial = preg_match('@[^\w]@', $name);
+    $nameSpecial = preg_match("/[^A-Za-z0-9 ]/", $name);
     if ($nameNumber || $nameSpecial || $name == "") {
         $_SESSION["errors"] = $_SESSION["errors"] . "name-";
         $register = false;
@@ -39,28 +41,34 @@
     
     // Validate surname
     $surnameNumber = preg_match('@[0-9]@', $surname);
-    $surnameSpecial = preg_match('@[^\w]@', $surname);
+    $surnameSpecial = preg_match("/[^A-Za-z0-9 ]/", $surname);
     if ($surnameNumber || $surnameSpecial || $surname == "") {
         $_SESSION["errors"] = $_SESSION["errors"] . "surname";
         $register = false;  
     }
     $surname = htmlspecialchars($surname);
 
+    // If valid continue
     if ($register) {
+        // Check that email don't exist
         include("../includes/connect.php");
         $sql = "SELECT email FROM users WHERE email = '" . $email . "'";
         $select = $conn->query($sql);
         if ($select && mysqli_num_rows($select) == 0) {
+            // Insert new user
             $conn->close();
             include("../includes/connect.php");
             $sql = "INSERT INTO users (name,surname,email,password,date) VALUES ('" . $name . "','" . $surname . "','" . $email . "','". password_hash($password, PASSWORD_BCRYPT, ['cost'=>4]) ."',(SELECT now()))";
             if ($conn->query($sql) === TRUE) {
+                // Get user
                 $conn->close();
                 include("../includes/connect.php");
                 $sql = "SELECT * FROM users WHERE email = '" . $email . "'";
                 $id = $conn->query($sql)->fetch_assoc()["id"];
                 $conn->close();
+                // Set session id
                 $_SESSION["id"] = $id;
+                // If remember create token
                 if ($rememberMe) {
                     $token = bin2hex(random_bytes(16));
                     $expired_seconds = time() + 60 * 60 * 24 * 30;
