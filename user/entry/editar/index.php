@@ -2,11 +2,11 @@
     include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/header.php";
     $backUrl = $_SERVER['REQUEST_URI'];
     $actualUser = getUser();
-    # Get actual entry
+    # Get actual entry to check if user is the author
     if (isset($_GET["e"])) {
         $entry = getEntry($_GET["e"]);
         if ($actualUser["id"] != $entry[1]) {
-            header("Location: /");
+            echo "<script>window.location.href = '/';</script>";
         }
     } else {
         header("Location: /");
