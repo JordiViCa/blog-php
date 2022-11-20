@@ -47,7 +47,7 @@
                 <div class="flex flex-col mb-4">
                     <div class="flex flex-row">
                         <label class="w-3/6 text-right pr-4 text-lg" for="cpassword">Contrasenya actual</label>
-                        <input class="w-3/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="text" name="cpassword" required id="cpassword">
+                        <input class="w-3/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="password" name="cpassword" required id="cpassword">
                     </div>
                     <?php
                         # Display text success/error
@@ -60,7 +60,7 @@
                 <div class="flex flex-col mb-4">
                     <div class="flex flex-row">
                         <label class="w-3/6 text-right pr-4 text-lg" for="cnpassword">Nova contrasenya</label>
-                        <input class="w-3/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="text" name="cnpassword" required id="cnpassword">
+                        <input class="w-3/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="password" name="cnpassword" required id="cnpassword">
                     </div>
                     <?php
                         # Display text success/error
@@ -73,7 +73,7 @@
                 <div class="flex flex-col mb-4">
                     <div class="flex flex-row">
                         <label class="w-3/6 text-right pr-4 text-lg" for="cnrpassword">Repetir contrasenya</label>
-                        <input class="w-3/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="text" name="cnrpassword" required id="cnrpassword">
+                        <input class="w-3/6 border-b border-gray-600 h-8 text-lg focus:outline-gray-500" type="password" name="cnrpassword" required id="cnrpassword">
                     </div>
                     <?php
                         # Display text success/error
@@ -130,7 +130,7 @@
                             $rows = getCategories();
                             foreach ($rows as $key => $value) {
                                 echo "<option value='" . strtolower($value[1]) . "'";
-                                if ($defaultCategory == strtolower($value[1])) { echo "selected >" . $value[2] .  "</option>"; } else { echo ">" . $value[2] .  "</option>"; }
+                                if ($defaultCategory == strtolower($value[1])) { echo "selected >" . $value[0] .  "</option>"; } else { echo ">" . $value[0] .  "</option>"; }
                             }
                         ?>
                     </select>

@@ -1,5 +1,5 @@
 <?php 
-
+    // Array de logs err
     $errorsLogReg = [
         "password" => "<p class='text-sm text-red-500 w-4/6 ml-auto'>Contrasenya invalida <br> Minim: <br>1 majus, 1 minus, 1 numero, 1 simbol i 8 longitud</p>",
         "remailexistent" => "<p class='text-sm text-red-500 w-4/6 ml-auto'>Correu electronic ja registrat</p>",
@@ -29,6 +29,7 @@
         "contact" => "<p class='text-sm text-red-500 w-full'>El correu no ha pogut ser enviat</p>",
     ];
 
+    // Array de logs done
     $doneLogReg = [
         "category" => "<p class='text-sm text-green-500'>Categoria creada</p>",
         "entry" => "<p class='text-sm text-green-500'>Entrada creada</p>",
@@ -39,7 +40,7 @@
         "categoryd" => "<p class='text-sm text-green-500'>Categoria eliminada correctament</p>",
         "contact" => "<p class='text-sm text-green-500 w-full'>Correu enviat correctament</p>",
     ];
-
+    // Mostrar error
     function displayError($key,$text = "") {
         global $errorsLogReg;
         if (!empty($text)) {
@@ -48,6 +49,7 @@
             return $errorsLogReg[$key];
         }
     }
+    // Mostrar done
     function displayDone($key, $text = "") {
         global $doneLogReg;
         if (!empty($text)) {
@@ -56,6 +58,7 @@
             return $doneLogReg[$key];
         }
     }
+    // Get full name
     function getFullName() {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $sql = "SELECT name,surname FROM users WHERE id = '" . $_SESSION["id"] . "'";
@@ -65,7 +68,7 @@
         $conn->close();
         return $nameSurname;
     }
-
+    // Get actual user
     function getUser() {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $sql = "SELECT * FROM users WHERE id = '" . $_SESSION["id"] . "'";
@@ -77,7 +80,7 @@
         }
         header("Location: /");
     }
-    
+    // Get categories
     function getCategories($limit = "") {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $sql = "SELECT name,id FROM categories " . $limit;
@@ -85,11 +88,11 @@
         $row = $select->fetch_all();
         return $row;
     }
-    
+    // Get site root
     function getSiteRoot() {
         return str_replace("\includes","",realpath(dirname(__FILE__)));
     }
-
+    // Get blogs
     function getBlogs() {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $sql = "SELECT * FROM blogs";
@@ -98,6 +101,7 @@
         return $row;
     }
 
+    // Get entries
     function getEntries($limit = "") {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $sql = "SELECT * FROM entries ORDER BY date desc " . $limit;
@@ -106,6 +110,7 @@
         return $row;
     }
     
+    // Get entry
     function getEntry($id) {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $sql = "SELECT * FROM entries WHERE id = " . $id;
@@ -114,7 +119,7 @@
         return $row[0];
     }
 
-
+    // Get user entries
     function getUserEntries($id,$limit = "",$title = "", $category = "") {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $titlesql = $title != "" ? " and title LIKE '%" . $title . "%'" : "";
@@ -129,6 +134,7 @@
         return $row;
     }
 
+    // Get blog name
     function getBlogName($entryID) {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $sql = "SELECT name FROM blogs INNER JOIN entries ON entries.blog_id = blogs.id WHERE entries.id = " . $entryID;
@@ -137,6 +143,7 @@
         return $row[0][0];
     }
 
+    // Get galeria entries
     function getGaleria($limit = "",$title = "", $category = "") {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $titlesql = $title != "" ? " and title LIKE '%" . $title . "%'" : "";
@@ -151,6 +158,7 @@
         return $row;
     }
 
+    // Get noticies entries
     function getNoticies($limit = "",$title = "", $category = "") {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $titlesql = $title != "" ? " and title LIKE '%" . $title . "%'" : "";
@@ -165,6 +173,7 @@
         return $row;
     }
 
+    // Get entry categories
     function getEntryCategories($entryID) {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $sql = "SELECT categories.name FROM categories INNER JOIN entry_categories ON entry_categories.category_id = categories.id WHERE entry_categories.entry_id = ". $entryID . "";
@@ -173,6 +182,7 @@
         return $row;
     }
 
+    // Get entry categories id
     function getEntryCategoriesID($entryID) {
         include $_SERVER['DOCUMENT_ROOT'] . "/includes/connect.php";
         $sql = "SELECT categories.id FROM categories INNER JOIN entry_categories ON entry_categories.category_id = categories.id WHERE entry_categories.entry_id = ". $entryID . "";
@@ -181,6 +191,7 @@
         return $row;
     }
 
+    // Get get string without accents
     function str_without_accents($str, $charset='utf-8')
     {
         $str = htmlentities($str, ENT_NOQUOTES, $charset);
