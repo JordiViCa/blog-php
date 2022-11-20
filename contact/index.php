@@ -77,7 +77,7 @@
                     }
                 ?>
             </div>
-            <button type="submit" value="<?php echo $backUrl; ?>" name="redirect">Enviar</button>
+            <button class="bg-gray-500 px-10 py-2 mt-4 text-white hover:bg-white hover:text-gray-500 border-gray-500 border focus:outline-gray-500"  type="submit" value="<?php echo $backUrl; ?>" name="redirect">Enviar</button>
         </form>
         <p class='text-sm text-green-500 w-full invisible'>Correu enviat correctament</p>
     </div>
